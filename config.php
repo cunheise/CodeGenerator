@@ -1,15 +1,5 @@
 <?php
 
-//class Config
-//{
-//    public function toArray()
-//    {
-//
-//    }
-//}
-//
-//$package_name = 'Joomlacreator';
-//$module_name = 'Slideshow';
 class Config
 {
     private $_data = array();
@@ -24,36 +14,25 @@ class Config
         return '__' . $v . '__';
     }
 
-    public function __toArray()
+    public function __toArray($flip = false)
     {
         $a = array();
+        uksort($this->_data, array($this, '_sortKey'));
         foreach ($this->_data as $k => $v) {
             $a[$k] = $this->getValue($v);
             if (strtolower($k) !== $k) {
                 $a[strtolower($k)] = $this->getValue(str_replace('name', 'lowcase_name', $v));
             }
         }
+        if ($flip) {
+            return array_flip($a);
+        }
         return $a;
+    }
+
+    private function _sortKey($a, $b)
+    {
+        return strlen($a) < strlen($b);
     }
 }
 
-$config = new Config(array(
-    'Joomlacreator' => 'package_name',
-    'Slideshow' => 'module_name',
-    'community' => 'code_pool',
-    '0.0.1' => 'version',
-    'Item' => 'model_name',
-    'Image' => 'attribute_name_1',
-    'Url' => 'attribute_name_2',
-));
-$config = new Config(array(
-    'Joomlacreator' => 'package_name',
-    'Celebrity' => 'module_name',
-    'community' => 'code_pool',
-    '0.0.1' => 'version',
-    'Profile' => 'model_name',
-    'Photo' => 'attribute_name_1',
-    'Fullname' => 'attribute_name_2',
-));
-//return $config->__toArray();
-return array_flip($config->__toArray());

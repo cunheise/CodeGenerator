@@ -2,28 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: nathan
- * Date: 5/13/14
- * Time: 9:49 PM
+ * Date: 6/18/14
+ * Time: 12:00 AM
  */
 require 'config.php';
 require 'functions.php';
 
 $configObj = new Config(array(
     'Joomlacreator' => 'package_name',
-    'Celebrity' => 'module_name',
+    'Slideshow' => 'module_name',
     'community' => 'code_pool',
     '0.0.1' => 'version',
-    'Profile' => 'model_name',
-    'Photo' => 'attribute_name_1',
-    'Fullname' => 'attribute_name_2',
+    'Item' => 'model_name',
+    'Image' => 'attribute_name_1',
+    'Url' => 'attribute_name_2',
 ));
-$baseDir = './template';
-$releaseDir = '/home/nathan/Sites/kjl';
+$baseDir = './src';
+$releaseDir = './template';
 $files = array();
 $start = strlen(rtrim($baseDir, DIRECTORY_SEPARATOR)) + 1;
 getFiles($baseDir, $files);
-$config = $configObj->__toArray(true);
 $paths = $files;
+$config = $configObj->__toArray();
 foreach ($paths as &$file) {
     $content = file_get_contents($file);
     array_walk($config, function ($v, $k) use (&$content) {
