@@ -3,10 +3,26 @@
 class Config
 {
     private $_data = array();
+    private $_baseDir;
+    private $_releaseDir;
+    private $_isFlip = false;
 
-    public function __construct($data)
+    public function __construct($data, $baseDir = './src', $releaseDir = './tpl', $isFlip = false)
     {
         $this->_data = $data;
+        $this->_baseDir = $baseDir;
+        $this->_releaseDir = $releaseDir;
+        $this->_isFlip = $isFlip;
+    }
+
+    public function getBaseDir()
+    {
+        return $this->_baseDir;
+    }
+
+    public function getReleaseDir()
+    {
+        return $this->_releaseDir;
     }
 
     public function getValue($v)
@@ -14,7 +30,7 @@ class Config
         return '__' . $v . '__';
     }
 
-    public function __toArray($flip = false)
+    public function __toArray()
     {
         $a = array();
         uksort($this->_data, array($this, '_sortKey'));
@@ -24,7 +40,7 @@ class Config
                 $a[strtolower($k)] = $this->getValue(str_replace('name', 'lowcase_name', $v));
             }
         }
-        if ($flip) {
+        if ($this->_isFlip) {
             return array_flip($a);
         }
         return $a;
